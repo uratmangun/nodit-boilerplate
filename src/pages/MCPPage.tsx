@@ -13,7 +13,6 @@ import {
   CheckCircle,
   AlertCircle,
   Clock,
-  ExternalLink,
   Wifi,
   WifiOff,
   Loader2,
@@ -47,6 +46,116 @@ const getToolCategory = (tool: any) => {
   return 'General Tools'
 }
 
+// Generate example parameters and responses for Nodit MCP tools
+const getExampleData = (toolName: string) => {
+  // Map tool names to their example data
+  const examples: Record<string, { params: any; response: any }> = {
+    'list_nodit_api_categories': {
+      params: {},
+      response: [
+        'Blockchain APIs',
+        'Data Services',
+        'Node Access',
+        'Event Streaming',
+        'Aptos Services',
+        'AI Integration',
+        'Network Coverage'
+      ]
+    },
+    'list_nodit_node_apis': {
+      params: {},
+      response: [
+        'eth_blockNumber',
+        'eth_call',
+        'eth_chainId',
+        'eth_estimateGas',
+        'eth_gasPrice',
+        'eth_getBalance',
+        'eth_getBlockByHash',
+        'eth_getBlockByNumber',
+        'eth_getLogs',
+        'eth_getTransactionByHash'
+      ]
+    },
+    'list_nodit_data_apis': {
+      params: {},
+      response: [
+        'get_block_by_number',
+        'get_transaction_by_hash',
+        'get_balance',
+        'get_logs',
+        'get_token_transfers'
+      ]
+    },
+    'list_nodit_webhook_apis': {
+      params: {},
+      response: [
+        'create_webhook',
+        'get_webhook',
+        'update_webhook',
+        'delete_webhook',
+        'list_webhooks'
+      ]
+    },
+    'call_nodit_api': {
+      params: {
+        protocol: 'ethereum',
+        network: 'mainnet',
+        operationId: 'eth_blockNumber',
+        requestBody: {
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'eth_blockNumber',
+          params: []
+        }
+      },
+      response: {
+        jsonrpc: '2.0',
+        id: 1,
+        result: '0x1234567'
+      }
+    },
+    'call_nodit_aptos_indexer_api': {
+      params: {
+        network: 'mainnet',
+        requestBody: {
+          query: `query GetAccount($address: String!) {
+            account(address: $address) {
+              address
+              sequence_number
+              authentication_key
+            }
+          }`,
+          variables: { address: '0x1' }
+        }
+      },
+      response: {
+        data: {
+          account: {
+            address: '0x1',
+            sequence_number: '12345',
+            authentication_key: '0x1234567890abcdef'
+          }
+        }
+      }
+    }
+  }
+
+  // Default examples for tools without specific ones
+  const defaultExamples: Record<string, { params: any; response: any }> = {
+    'default': {
+      params: {},
+      response: {
+        success: true,
+        data: 'Example response data'
+      }
+    }
+  }
+
+  // Return specific example or default
+  return examples[toolName] || defaultExamples['default']
+}
+
 const statusColors = {
   active: 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-400',
   inactive: 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
@@ -77,17 +186,24 @@ export default function MCPPage() {
     autoReconnect: true,
   })
 
-  // Transform MCP tools into our display format
-  const transformedTools = tools.map((tool: any, index: number) => ({
-    id: tool.name || `tool-${index}`,
-    name: tool.name || 'Unknown Tool',
-    description: tool.description || 'No description available',
-    category: getToolCategory(tool),
-    status: 'active' as const,
-    icon: getToolIcon(tool.name || ''),
-    capabilities: tool.inputSchema?.properties ? Object.keys(tool.inputSchema.properties) : [],
-    lastUsed: undefined,
-  }))
+  // Transform MCP tools into our display format with example data
+  const transformedTools = tools.map((tool: any, index: number) => {
+    // Generate example parameters and responses for each tool
+    const exampleData = getExampleData(tool.name || '');
+    
+    return {
+      id: tool.name || `tool-${index}`,
+      name: tool.name || 'Unknown Tool',
+      description: tool.description || 'No description available',
+      category: getToolCategory(tool),
+      status: 'active' as const,
+      icon: getToolIcon(tool.name || ''),
+      inputSchema: tool.inputSchema,
+      exampleParams: exampleData?.params || null,
+      exampleResponse: exampleData?.response || null,
+      lastUsed: undefined,
+    };
+  })
 
   // Get unique categories from transformed tools
   const availableCategories = ['all', ...Array.from(new Set(transformedTools.map((tool: any) => tool.category)))]
@@ -218,17 +334,40 @@ export default function MCPPage() {
 
               <div className="space-y-3">
                 <div>
-                  <h4 className="text-xs font-medium text-muted-foreground mb-2">CAPABILITIES</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {tool.capabilities.slice(0, 3).map((capability, index) => (
-                      <span key={index} className="text-xs bg-muted px-2 py-1 rounded">
-                        {capability}
-                      </span>
-                    ))}
-                    {tool.capabilities.length > 3 && (
-                      <span className="text-xs text-muted-foreground">+{tool.capabilities.length - 3} more</span>
-                    )}
-                  </div>
+                  <h4 className="text-xs font-medium text-muted-foreground mb-2">INPUT SCHEMA</h4>
+                  {tool.inputSchema ? (
+                    <div className="bg-muted/50 rounded p-3 text-xs font-mono">
+                      <pre className="whitespace-pre-wrap break-words max-h-32 overflow-y-auto">
+                        {JSON.stringify(tool.inputSchema, null, 2)}
+                      </pre>
+                    </div>
+                  ) : (
+                    <div className="text-xs text-muted-foreground italic">
+                      No input schema available
+                    </div>
+                  )}
+
+                  {tool.exampleParams && (
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-medium text-muted-foreground mb-2">EXAMPLE PARAMETERS</h4>
+                      <div className="bg-blue-50 dark:bg-blue-900/20 rounded p-3 text-xs font-mono">
+                        <pre className="whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
+                          {JSON.stringify(tool.exampleParams, null, 2)}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
+
+                  {tool.exampleResponse && (
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-medium text-muted-foreground mb-2">EXAMPLE RESPONSE</h4>
+                      <div className="bg-green-50 dark:bg-green-900/20 rounded p-3 text-xs font-mono">
+                        <pre className="whitespace-pre-wrap break-words max-h-24 overflow-y-auto">
+                          {JSON.stringify(tool.exampleResponse, null, 2)}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {tool.lastUsed && (
@@ -237,66 +376,8 @@ export default function MCPPage() {
                   </div>
                 )}
 
-                <div className="flex gap-2 pt-2">
-                  <Button variant="outline" size="sm" className="flex-1">
-                    Configure
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    disabled={tool.status !== 'active'}
-                    className="flex items-center gap-1"
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                    Use
-                  </Button>
-              </div>
+
               
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs ${statusColors[tool.status]}`}>
-                <StatusIcon className="h-3 w-3" />
-                {tool.status}
-              </div>
-            </div>
-
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-              {tool.description}
-            </p>
-
-            <div className="space-y-3">
-              <div>
-                <h4 className="text-xs font-medium text-muted-foreground mb-2">CAPABILITIES</h4>
-                <div className="flex flex-wrap gap-1">
-                  {tool.capabilities.slice(0, 3).map((capability, index) => (
-                    <span key={index} className="text-xs bg-muted px-2 py-1 rounded">
-                      {capability}
-                    </span>
-                  ))}
-                  {tool.capabilities.length > 3 && (
-                    <span className="text-xs text-muted-foreground">+{tool.capabilities.length - 3} more</span>
-                  )}
-                </div>
-              </div>
-
-              {tool.lastUsed && (
-                <div className="text-xs text-muted-foreground">
-                  Last used: {tool.lastUsed}
-                </div>
-              )}
-
-              <div className="flex gap-2 pt-2">
-                <Button variant="outline" size="sm" className="flex-1">
-                  Configure
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  disabled={tool.status !== 'active'}
-                  className="flex items-center gap-1"
-                >
-                  <ExternalLink className="h-3 w-3" />
-                  Use
-                </Button>
-              </div>
             </div>
           </div>
         )
