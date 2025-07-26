@@ -1,0 +1,46 @@
+AKINDO PITCH DOCUMENT
+
+PROJECT NAME:
+Nodit MCP Boilerplate
+
+DESCRIPTION:
+A comprehensive web application boilerplate that serves as a starting template for developers who want to integrate with Nodit's Model Context Protocol (MCP) services. The application provides a modern React-based interface for showcasing MCP capabilities, including live tool integration, chat functionality, and seamless developer experience with GitHub template distribution.
+
+TAGLINE:
+The ultimate developer-friendly boilerplate for integrating blockchain data analysis and AI-powered query capabilities through Nodit's Model Context Protocol, featuring real-time MCP tool discovery, OpenRouter AI chat integration, and a modern React interface that gets you from zero to production in minutes.
+
+WHAT IT DOES:
+The Nodit MCP Boilerplate is a full-featured web application that demonstrates and enables integration with Nodit's blockchain infrastructure services. It features three main components: a landing page with GitHub template integration for easy project creation, a live MCP tools dashboard that connects to Nodit's server and displays real-time blockchain APIs and data services, and an OpenRouter-powered chat interface that allows conversational AI interactions with MCP tool calling capabilities. The application automatically discovers available MCP tools, categorizes them by functionality (Blockchain APIs, Data Services, Node Access, Event Streaming, Aptos Services), and provides search and filtering capabilities for developers to explore what's available.
+
+THE PROBLEM IT SOLVES:
+Blockchain developers face significant barriers when trying to integrate with complex blockchain infrastructure services. They often struggle with understanding what APIs are available, how to connect to MCP servers, setting up proper authentication, and building user interfaces that can effectively showcase blockchain data capabilities. Additionally, there's a lack of standardized templates that combine modern web development practices with blockchain infrastructure integration, forcing developers to start from scratch every time they want to build applications that interact with blockchain data services.
+
+CHALLENGES I RAN INTO:
+The primary challenge was establishing reliable real-time connections to the Nodit MCP server using Server-Sent Events (SSE) while handling various connection states gracefully. Implementing proper error handling and retry mechanisms for network failures required careful state management. Another significant challenge was transforming the raw MCP tool data into a user-friendly format with automatic categorization and icon mapping. Integrating OpenRouter's API for AI chat functionality while maintaining compatibility with MCP tool calling required careful coordination between different API systems. Additionally, ensuring the GitHub template functionality worked correctly across different environments and maintaining responsive design across all components presented ongoing challenges.
+
+TECHNOLOGIES I USED:
+Frontend: React 19, TypeScript, Vite for fast development and building
+UI Framework: shadcn/ui components built on Radix UI primitives for accessibility
+Styling: Tailwind CSS with custom green gradient theming
+MCP Integration: use-mcp package for React integration with Model Context Protocol
+AI Integration: OpenRouter API for accessing multiple AI models with tool calling
+Authentication: Privy for Web3 authentication and Supabase Auth
+Backend Services: Supabase for database and backend services
+Routing: React Router DOM for single-page application navigation
+Testing: Vitest with React Testing Library for comprehensive testing
+Development Tools: ESLint, Prettier for code quality and formatting
+Package Management: pnpm and bun for efficient dependency management
+Icons: Lucide React for consistent iconography
+Markdown: React Markdown with syntax highlighting for chat responses
+
+HOW WE BUILT IT:
+The development process followed a systematic approach starting with project architecture design and component structure planning. We implemented the core layout components including header navigation with green-themed branding and responsive design. The homepage was built with GitHub template integration, featuring copy-to-clipboard functionality for template commands and direct links to repository creation. The MCP integration was developed using the use-mcp React hook, implementing connection state management, tool discovery, and real-time data transformation. The chat interface was built with OpenRouter API integration, supporting multiple AI models and MCP tool calling capabilities. We implemented comprehensive error handling with retry mechanisms, loading states, and graceful degradation when services are unavailable. The UI was styled with a consistent green gradient theme using Tailwind CSS and shadcn/ui components. Finally, we configured the repository as a GitHub template and added comprehensive documentation for easy adoption.
+
+WHAT WE LEARNED:
+Working with Model Context Protocol taught us the importance of robust connection state management when dealing with real-time data streams. We learned that user experience is crucial when building developer tools - clear loading states, helpful error messages, and intuitive interfaces make the difference between adoption and abandonment. The integration of multiple APIs (MCP, OpenRouter, GitHub) highlighted the need for careful error boundary implementation and fallback strategies. We discovered that automatic tool categorization and search functionality are essential for managing large numbers of API endpoints. The project reinforced the value of comprehensive documentation and examples in developer-focused products. We also learned that responsive design and accessibility considerations are just as important in developer tools as in consumer applications.
+
+WHAT'S NEXT FOR NODIT MCP BOILERPLATE:
+The immediate roadmap includes expanding the chat interface with conversation history persistence and user session management. We plan to add more sophisticated MCP tool calling with parameter validation and result formatting. Enhanced authentication features including role-based access control and team collaboration capabilities are planned. We want to implement real-time collaboration features using Supabase Realtime for multi-user development environments. Additional blockchain network support beyond Ethereum and Aptos is being considered. We're planning to add a visual query builder for complex blockchain data queries and custom dashboard creation capabilities. Integration with more AI providers beyond OpenRouter and support for custom MCP server configurations are also on the roadmap. Finally, we plan to create additional templates for specific use cases like DeFi analytics, NFT marketplaces, and DAO governance tools.
+
+UPDATE OF THIS PROJECT TODAY:
+As of today, the Nodit MCP Boilerplate is a fully functional web application successfully deployed and available as a GitHub template. The project has completed all major features including live MCP server integration with real-time tool discovery, OpenRouter AI chat with tool calling capabilities, and a comprehensive developer experience with GitHub template functionality. The application successfully connects to the Nodit MCP server at https://nodit-mcp.uratmangun.fun/sse and displays live blockchain API tools with automatic categorization and search functionality. The chat interface supports multiple AI models through OpenRouter and can execute MCP tools in real-time during conversations. The codebase includes comprehensive testing, documentation, and follows modern React development best practices. The repository is properly configured as a GitHub template, allowing developers to create new projects with a single command. All components are responsive, accessible, and themed with a consistent green gradient design that reflects the Nodit brand identity.
