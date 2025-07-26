@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { CopyButton } from '@/components/ui/copy-button'
+import AuthStatus from '@/components/auth/AuthStatus'
 import { ExternalLink, Github } from 'lucide-react'
 
 export default function HomePage() {
@@ -62,6 +63,11 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
+        </div>
+
+        {/* Authentication Status */}
+        <div className="max-w-md mx-auto">
+          <AuthStatus />
         </div>
         
         {/* Optional: Add a subtle green glow effect */}

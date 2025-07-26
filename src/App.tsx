@@ -5,6 +5,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 import RouteErrorBoundary from '@/components/common/RouteErrorBoundary'
 import GlobalErrorBoundary from '@/components/common/GlobalErrorBoundary'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
+import PrivyProviderWrapper from '@/components/providers/PrivyProvider'
 import { Toaster } from '@/components/ui/toaster'
 import { StagewiseToolbar } from '@stagewise/toolbar-react'
 import ReactPlugin from '@stagewise-plugins/react'
@@ -18,7 +19,8 @@ const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 function App() {
   return (
     <GlobalErrorBoundary>
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <PrivyProviderWrapper>
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -67,7 +69,8 @@ function App() {
           <Toaster />
         </BrowserRouter>
         <StagewiseToolbar config={{ plugins: [ReactPlugin] }} />
-      </ThemeProvider>
+        </ThemeProvider>
+      </PrivyProviderWrapper>
     </GlobalErrorBoundary>
   )
 }

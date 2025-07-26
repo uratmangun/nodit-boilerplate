@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
+import LoginButton from '@/components/auth/LoginButton'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
@@ -55,6 +56,7 @@ export default function Header() {
 
           {/* Right side actions */}
           <div className="flex items-center space-x-2">
+            <LoginButton />
             <ThemeToggle />
             
             {/* Mobile menu button */}
