@@ -19,10 +19,10 @@ export default function Header() {
           {/* Logo/Brand */}
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">V</span>
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-green-600 to-emerald-500 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">N</span>
               </div>
-              <span className="font-bold text-lg hidden sm:block">Vite App</span>
+              <span className="font-bold text-lg hidden sm:block">nodit mcp boilerplate</span>
             </Link>
           </div>
 
@@ -37,11 +37,19 @@ export default function Header() {
             </Button>
             
             <Button
-              variant={isActive('/about') ? 'default' : 'ghost'}
+              variant={isActive('/chat') ? 'default' : 'ghost'}
               size="sm"
               asChild
             >
-              <Link to="/about">About</Link>
+              <Link to="/chat">Chat</Link>
+            </Button>
+            
+            <Button
+              variant={isActive('/mcp') ? 'default' : 'ghost'}
+              size="sm"
+              asChild
+            >
+              <Link to="/mcp">MCP</Link>
             </Button>
           </nav>
 

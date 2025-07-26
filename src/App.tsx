@@ -11,7 +11,8 @@ import ReactPlugin from '@stagewise-plugins/react'
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('@/pages/HomePage'))
-const AboutPage = lazy(() => import('@/pages/AboutPage'))
+const ChatPage = lazy(() => import('@/pages/ChatPage'))
+const MCPPage = lazy(() => import('@/pages/MCPPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 function App() {
@@ -32,11 +33,21 @@ function App() {
                 }
               />
               <Route
-                path="about"
+                path="chat"
                 element={
                   <RouteErrorBoundary>
                     <Suspense fallback={<LoadingSpinner />}>
-                      <AboutPage />
+                      <ChatPage />
+                    </Suspense>
+                  </RouteErrorBoundary>
+                }
+              />
+              <Route
+                path="mcp"
+                element={
+                  <RouteErrorBoundary>
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <MCPPage />
                     </Suspense>
                   </RouteErrorBoundary>
                 }
